@@ -2,7 +2,7 @@ import React from "react";
 import { appMachine } from "./machine";
 import { createModel } from "@xstate/test";
 import { render, fireEvent, cleanup } from "@testing-library/react";
-import App from "./App";
+import { App } from "./App";
 
 describe("FSM React test app", () => {
   const appModel = createModel(appMachine).withEvents({
@@ -13,20 +13,13 @@ describe("FSM React test app", () => {
         });
         fireEvent.click(getByTestId("login-form"));
       },
-      cases: [{ value: "" }, { value: "someone" }],
+      cases: [{ value: "someone" }, { value: "" }],
     },
-    LOGOUT: {
-      exec: async ({ getByTestId }) => {
-        fireEvent.click(getByTestId("button-logout"));
-      },
-      cases: [{ value: "" }],
+    LOGOUT: ({ getByTestId }) => {
+      fireEvent.click(getByTestId("button-logout"));
     },
-    SUCCESS: () => {},
-    FAIL: () => {},
   });
   const testPlans = appModel.getSimplePathPlans();
-  // TODO: filter properly
-  testPlans[2].paths.shift();
   
   testPlans.forEach((plan) => {
     describe(plan.description, () => {

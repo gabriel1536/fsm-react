@@ -1,4 +1,6 @@
 import { Machine } from 'xstate';
+import { assert } from 'chai';
+import { render, fireEvent, cleanup, wait } from '@testing-library/react';
 
 export const appMachine = Machine({
     initial: 'loggedOut',
@@ -8,12 +10,22 @@ export const appMachine = Machine({
         on: {
           SUBMIT: 'loading',
         },
+        meta: {
+          test: ({ getByTestId }) => {
+            assert.ok(getByTestId('login-form') && !getByTestId('login-input').hasAttribute('disabled'));
+          }
+        }
       },
       loading: {
         on: {
           SUCCESS: 'loggedIn',
           FAIL: 'loggedOut',
         },
+        meta: {
+          test: ({ getByTestId }) => {
+            assert.ok(!getByTestId('login-input').disabled);
+          }
+        }
       },
       loggedIn: {
         onEntry: ['setUser'],
@@ -21,6 +33,11 @@ export const appMachine = Machine({
         on: {
           LOGOUT: 'loggedOut',
         },
+        meta: {
+          test: ({ getByTestId }) => {
+            setTimeout(() => assert.ok(getByTestId('button-logout')), 2001);
+          }
+        }
       },
     },
   });

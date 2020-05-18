@@ -8,6 +8,7 @@ export const Dashboard = () => (
         <div className="welcome">
           <h1>Hello, {user.name}!</h1>
           <button
+            data-testid="button-logout"
             className="bw0 br1 pa2 bg-green white pointer"
             onClick={e => logout(e)}
           >
