@@ -43,7 +43,7 @@ export class Login extends React.Component {
         type: 'FAIL',
         error: 'Uh oh, you must enter your name!',
       });
-    }, 1200);
+    }, 0);
   }
  
   render() {
@@ -52,7 +52,7 @@ export class Login extends React.Component {
         {({ authState, error }) => {
           const errorClass = error ? 'error' : '';
           return (
-            <form onSubmit={e => this.doLogin(e)} className="login-form">
+            <form onSubmit={e => this.doLogin(e)} className="login-form" data-testid="login-form">
               <h2>Login to your account</h2>
               <div className="error-message">{error}</div>
               <label htmlFor="yourName">
@@ -69,6 +69,7 @@ export class Login extends React.Component {
               </label>
               <input
                 type="submit"
+                data-testid="login-input"
                 value={authState === 'loading' ? 'Logging in...' : 'Login'}
                 disabled={authState === 'loading' ? true : false}
               />
